@@ -5,9 +5,9 @@ ENV PGID 1001
 ENV PUSER rtorrent
 ENV PGROUP rtorrent
 
-RUN addgroup -g $PGID $PGROUP && \
-	adduser -D -G $PGROUP -u $PUID $PUSER && \
-	apk add --no-cache --upgrade rtorrent mysql-client nano && \
+COPY root/etc/rtorrent.conf /etc/rtorrent.conf
+
+RUN apk add --no-cache --upgrade rtorrent mysql-client nano && \
 	mkdir -p /config/config.d && \
 	mkdir -p /data/film && \
 	mkdir -p /data/games && \
@@ -18,10 +18,12 @@ RUN addgroup -g $PGID $PGROUP && \
 	mkdir -p /data/rtorrent/watch && \
 	mkdir -p /log && \
 	mkdir -p /scripts && \
-	chown -R $PUSER:$PGROUP /config /data /log /scripts
+	addgroup -g $PGID $PGROUP && \
+	adduser -D -G $PGROUP -u $PUID $PUSER && \
+	chown -R $PUSER:$PGROUP /config /data /log /scripts /etc/rtorrent.conf
 
 #COPY --chown=$PUSER:$PGROUP root/config/config.d/ /config/config.d/
-COPY --chown=$PUSER:$PGROUP root/etc/rtorrent.conf /etc/rtorrent.conf
+#COPY --chown=$PUSER:$PGROUP root/etc/rtorrent.conf /etc/rtorrent.conf
 
 VOLUME /config /data/film /data/games /data/music /data/television /data/rtorrent /log /scripts
 
