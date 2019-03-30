@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:latest
 
 ENV PUID 1001
 ENV PGID 1001
@@ -6,7 +6,7 @@ ENV PUSER rtorrent
 ENV PGROUP rtorrent
 
 RUN addgroup -g $PGID $PGROUP && \
-	adduser -D -G $PGROUP -u $PUID $PUSER  && \
+	adduser -D -G $PGROUP -u $PUID $PUSER && \
 	apk add --no-cache --upgrade rtorrent mysql-client nano && \
 	mkdir -p /config/config.d && \
 	mkdir -p /data/film && \
