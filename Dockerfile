@@ -28,10 +28,10 @@ RUN apk add --no-cache --upgrade rtorrent mysql-client nano && \
 
 VOLUME /config /data/film /data/games /data/music /data/television /data/rtorrent /log /scripts
 
-EXPOSE 16891
+#EXPOSE 16891
 #EXPOSE 6881
 #EXPOSE 6881/udp
-EXPOSE 50000
+#EXPOSE 50000
 
 USER $PUSER
 
