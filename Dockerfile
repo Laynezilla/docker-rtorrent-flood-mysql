@@ -21,6 +21,7 @@ RUN apk add --no-cache --upgrade rtorrent mysql-client nano && \
 	addgroup -g $PGID $PGROUP && \
 	adduser -D -G $PGROUP -u $PUID $PUSER && \
 	chown -R $PUSER:$PGROUP /config /data /log /scripts /etc/rtorrent.conf
+	chmod 744 /etc/rtorrent.conf
 
 #COPY --chown=$PUSER:$PGROUP root/config/config.d/ /config/config.d/
 #COPY --chown=$PUSER:$PGROUP root/etc/rtorrent.conf /etc/rtorrent.conf
