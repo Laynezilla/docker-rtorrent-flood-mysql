@@ -3,37 +3,35 @@ FROM alpine:latest
 ENV PUID 1001
 ENV PGID 1001
 ENV PUSER rtorrent
-ENV PGROUP rtorrent
+ENV PGROUP data
 
-COPY root/etc/rtorrent.conf /etc/rtorrent.conf
+#COPY root/etc/rtorrent.conf /etc/rtorrent.conf
+#COPY root/usr/local/bin/docker-entrypoint.sh /usr/local/bin/
+COPY root /
 
-RUN apk add --no-cache --upgrade rtorrent mysql-client nano && \
-	mkdir -p /config/config.d && \
-	mkdir -p /data/film && \
-	mkdir -p /data/games && \
-	mkdir -p /data/music && \
-	mkdir -p /data/television && \
-	mkdir -p /data/rtorrent/.session && \
-	mkdir -p /data/rtorrent/downloads && \
-	mkdir -p /data/rtorrent/watch && \
-	mkdir -p /log && \
-	mkdir -p /scripts && \
+RUN apk add --no-cache --upgrade rtorrent mysql-client nano su-exec && \
 	addgroup -g $PGID $PGROUP && \
 	adduser -D -G $PGROUP -u $PUID $PUSER && \
-	chown -R $PUSER:$PGROUP /config /data /log /scripts /etc/rtorrent.conf && \
+	chmod +x /usr/local/bin/docker-entrypoint.sh && \
+	mkdir -p /config/config.d \
+	/data/film \
+	/data/games \
+	/data/music \
+	/data/television \
+	/data/rtorrent/.session \
+	/data/rtorrent/downloads \
+	/data/rtorrent/watch \
+	/log \
+	/scripts \
 	chmod 744 /etc/rtorrent.conf
-
-#COPY --chown=$PUSER:$PGROUP root/config/config.d/ /config/config.d/
-#COPY --chown=$PUSER:$PGROUP root/etc/rtorrent.conf /etc/rtorrent.conf
-
-VOLUME /config /data/film /data/games /data/music /data/television /data/rtorrent /log /scripts
 
 #EXPOSE 16891
 #EXPOSE 6881
 #EXPOSE 6881/udp
 #EXPOSE 50000
 
-USER $PUSER
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-#CMD [ "rtorrent" ]
 CMD [ "rtorrent", "-n", "-o", "import=/etc/rtorrent.conf" ]
+
+VOLUME /config /data/film /data/games /data/music /data/television /data/rtorrent /log /scripts
