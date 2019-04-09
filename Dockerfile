@@ -22,7 +22,7 @@ RUN apk add --no-cache --upgrade rtorrent mysql-client nano su-exec && \
 	/data/rtorrent/downloads \
 	/data/rtorrent/watch \
 	/log \
-	/scripts \
+	/scripts && \
 	chmod 744 /etc/rtorrent.conf
 
 #EXPOSE 16891
