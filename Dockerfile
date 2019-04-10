@@ -5,11 +5,9 @@ ENV PGID 1001
 ENV PUSER rtorrent
 ENV PGROUP data
 
-#COPY root/etc/rtorrent.conf /etc/rtorrent.conf
-#COPY root/usr/local/bin/docker-entrypoint.sh /usr/local/bin/
 COPY root /
 
-RUN apk add --no-cache --upgrade rtorrent mysql-client nano su-exec && \
+RUN apk add --no-cache --upgrade rtorrent mysql-client nano shadow su-exec && \
 	addgroup -g $PGID $PGROUP && \
 	adduser -D -G $PGROUP -u $PUID $PUSER && \
 	chmod +x /usr/local/bin/docker-entrypoint.sh && \
