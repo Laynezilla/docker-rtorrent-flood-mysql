@@ -10,8 +10,7 @@ COPY root /
 RUN apk add --no-cache --upgrade rtorrent mysql-client nano shadow su-exec && \
 	addgroup -g $PGID $PGROUP && \
 	adduser -D -G $PGROUP -u $PUID $PUSER && \
-	chmod +x /usr/local/bin/docker-entrypoint.sh && \
-	mkdir -p /config/config.d \
+	mkdir -m 775 -p /config/config.d \
 	/data/film \
 	/data/games \
 	/data/music \
@@ -21,7 +20,7 @@ RUN apk add --no-cache --upgrade rtorrent mysql-client nano shadow su-exec && \
 	/data/rtorrent/watch \
 	/log \
 	/scripts && \
-	chmod 744 /etc/rtorrent.conf
+	chmod 755 /usr/local/bin/docker-entrypoint.sh /etc/rtorrent.conf
 
 #EXPOSE 16891
 #EXPOSE 6881
@@ -30,6 +29,6 @@ RUN apk add --no-cache --upgrade rtorrent mysql-client nano shadow su-exec && \
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-CMD [ "rtorrent", "-n", "-o", "import=/etc/rtorrent.conf" ]
+CMD ["rtorrent", "-n", "-o", "import=/etc/rtorrent.conf"]
 
 VOLUME /config /data/film /data/games /data/music /data/television /data/rtorrent /log /scripts
