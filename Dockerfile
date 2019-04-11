@@ -22,13 +22,10 @@ RUN apk add --no-cache --upgrade rtorrent mysql-client nano shadow su-exec && \
 	/scripts && \
 	chmod 755 /usr/local/bin/docker-entrypoint.sh /etc/rtorrent.conf
 
-#EXPOSE 16891
-#EXPOSE 6881
-#EXPOSE 6881/udp
-#EXPOSE 50000
-
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 CMD ["rtorrent", "-n", "-o", "import=/etc/rtorrent.conf"]
 
 VOLUME /config /data/film /data/games /data/music /data/television /data/rtorrent /log /scripts
+
+WORKDIR /data/rtorrent/
